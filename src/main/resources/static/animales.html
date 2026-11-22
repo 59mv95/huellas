@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Huellas · Nuestros animales</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Sigmar&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Nunito', sans-serif; background: #FFF8ED; color: #3A3028; max-width: 1000px; margin: 1.5rem auto; padding: 0 1rem; }
+        header, footer { background: #E5DED3; padding: .7rem 1.2rem; border-radius: 6px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem; }
+        .logo { font-family: 'Sigmar', cursive; font-size: 1.6rem; }
+        .banda { background: #6B8E6E; padding: 1rem 1.3rem; border-radius: 6px; margin: 1rem 0; }
+        .banda h1 { margin: 0; }
+        .banda p { margin: .3rem 0 0; }
+        form { display: flex; flex-wrap: wrap; gap: .7rem; align-items: flex-end; border: 2px solid #E5DED3; border-radius: 10px; padding: 1rem; }
+        label { display: flex; flex-direction: column; font-weight: 700; font-size: .9rem; }
+        input, select { font: inherit; padding: .35rem; border: 2px solid #E5DED3; border-radius: 6px; }
+        .corto { width: 5rem; }
+        button { font: inherit; font-weight: 700; border: none; border-radius: 999px; padding: .4rem 1.2rem; background: #FFC067; cursor: pointer; }
+        button:hover { background: #D99E32; color: #fff; }
+        .borrar { background: transparent; border: 2px solid #D9534F; color: #D9534F; }
+        .borrar:hover { background: #D9534F; }
+        #mensaje { padding: .6rem; margin: 1rem 0; display: none; border-radius: 6px; font-weight: 700; }
+        #mensaje.ok { display: block; background: #e6f6e6; }
+        #mensaje.error { display: block; background: #fbe9e9; }
+        .tarjeta { display: grid; grid-template-columns: 180px 1fr; border: 2px solid #3A3028; border-radius: 6px; margin-bottom: 1rem; overflow: hidden; }
+        .tarjeta img { width: 100%; height: 100%; min-height: 150px; object-fit: cover; background: #E5DED3; }
+        .cuerpo { padding: .6rem 1rem; }
+        .cuerpo h2 { margin: 0; display: flex; justify-content: space-between; gap: .5rem; }
+        .cuerpo p { margin: .25rem 0; }
+        .etiqueta { font-size: .7rem; padding: .25rem .6rem; border-radius: 4px; white-space: nowrap; }
+        .DISPONIBLE { background: #A8D8A8; }
+        .EN_PROCESO { background: #FFC067; }
+        .NO_DISPONIBLE { background: #E9A3A1; }
+        .datos { color: #6B8E6E; font-weight: 700; }
+        .acciones { display: flex; gap: .5rem; align-items: center; margin-top: .5rem; flex-wrap: wrap; }
+        @media (max-width: 600px) { .tarjeta { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+<header>
+    <span class="logo">🐾 HUELLAS</span>
+    <span>INICIO · ANIMALES · CONTACTO</span>
+</header>
+
+<div class="banda">
+    <h1>NUESTROS ANIMALES</h1>
+    <p>Cada huella cuenta. Adopta, apadrina o ayúdanos a cuidarles</p>
+</div>
+
+<div id="mensaje"></div>
+
+<h2>Dar de alta un animal</h2>
+<form id="formCrear">
+    <label>Nombre <input name="nombre" required></label>
+    <label>Tipo
+        <select name="especie" required>
+            <option value="">-- Elige --</option>
+            <option value="PERRO">Perro</option>
+            <option value="GATO">Gato</option>
+            <option value="AVE">Ave</option>
+            <option value="CONEJO">Conejo</option>
+            <option value="ROEDOR">Roedor</option>
+            <option value="REPTIL">Reptil</option>
+            <option value="OTRO">Otro</option>
+        </select>
+    </label>
+    <label>Raza <input name="raza"></label>
+    <label>Edad (años) <input name="edad" type="number" min="0" max="30" value="0" class="corto"></label>
+    <label>Sexo
+        <select name="sexo" required>
+            <option value="">-- Elige --</option>
+            <option value="MACHO">Macho</option>
+            <option value="HEMBRA">Hembra</option>
+        </select>
+    </label>
+    <label>Tamaño
+        <select name="tamano">
+            <option value="">-- Sin indicar --</option>
+            <option value="PEQUENO">Pequeño</option>
+            <option value="MEDIANO">Mediano</option>
+            <option value="GRANDE">Grande</option>
+        </select>
+    </label>
+    <label>Peso (kg) <input name="peso" type="number" step="0.01" min="0" value="0" class="corto"></label>
+    <label>Personalidad <input name="personalidad"></label>
+    <label>Descripción <input name="descripcion"></label>
+    <label>Foto (URL) <input name="foto"></label>
+    <label><span><input type="checkbox" id="vacunado"> Vacunado</span></label>
+    <label><span><input type="checkbox" id="esterilizado"> Esterilizado</span></label>
+    <button type="submit">CREAR</button>
+</form>
+
+<h2>Listado
+    <select id="filtro">
+        <option value="">Todos</option>
+        <option value="PERRO">Perros</option>
+        <option value="GATO">Gatos</option>
+        <option value="AVE">Aves</option>
+        <option value="CONEJO">Conejos</option>
+        <option value="ROEDOR">Roedores</option>
+        <option value="REPTIL">Reptiles</option>
+        <option value="OTRO">Otros</option>
+    </select>
+</h2>
+<div id="lista"></div>
+
+<footer>
+    <span>📞 900 322 116</span>
+    <span>✉ huellas@hotmail.com</span>
+    <span>@huellasprotectora</span>
+</footer>
+
+<script>
+    const URL_API = '/animales';
+    const ESTADOS = ['DISPONIBLE', 'EN_PROCESO', 'NO_DISPONIBLE'];
+
+    function mostrarMensaje(texto, esError) {
+        const div = document.getElementById('mensaje');
+        div.textContent = texto;
+        div.className = esError ? 'error' : 'ok';
+    }
+    
+    async function textoDeError(respuesta) {
+        const doc = new DOMParser().parseFromString(await respuesta.text(), 'text/html');
+        const items = [...doc.querySelectorAll('li, dd')].map(e => e.textContent.trim());
+        return items.length ? items.join(' · ') : 'Error ' + respuesta.status;
+    }
+
+    function crearTarjeta(a) {
+        const art = document.createElement('article');
+        art.className = 'tarjeta';
+
+        const img = document.createElement('img');
+        img.src = a.foto || '';
+        img.alt = a.nombre;
+        img.onerror = () => img.removeAttribute('src'); 
+
+        const cuerpo = document.createElement('div');
+        cuerpo.className = 'cuerpo';
+
+        const h2 = document.createElement('h2');
+        h2.textContent = a.nombre.toUpperCase();
+        const etiqueta = document.createElement('span');
+        etiqueta.className = 'etiqueta ' + a.estado;
+        etiqueta.textContent = a.estado.replace('_', ' ');
+        h2.appendChild(etiqueta);
+
+        const datos = document.createElement('p');
+        datos.className = 'datos';
+        datos.textContent = `${a.especie} · ${a.raza || 'Raza desconocida'} · ${a.edad} años · ${a.sexo}`
+            + (a.tamano ? ` · ${a.tamano}` : '') + ` · ${a.peso} kg`;
+
+        const personalidad = document.createElement('p');
+        personalidad.textContent = a.personalidad || '';
+
+        const descripcion = document.createElement('p');
+        descripcion.textContent = a.descripcion || '';
+
+        const salud = document.createElement('p');
+        salud.textContent = (a.vacunado ? '✓ Vacunado  ' : '✗ Sin vacunar  ')
+                          + (a.esterilizado ? '✓ Esterilizado' : '✗ Sin esterilizar');
+
+        const acciones = document.createElement('div');
+        acciones.className = 'acciones';
+        const select = document.createElement('select');
+        for (const e of ESTADOS) {
+            select.add(new Option(e.replace('_', ' '), e, false, e === a.estado));
+        }
+        const btnGuardar = document.createElement('button');
+        btnGuardar.textContent = 'Cambiar estado';
+        btnGuardar.onclick = () => editarAnimal(a, select.value);
+        const btnBorrar = document.createElement('button');
+        btnBorrar.textContent = 'Borrar';
+        btnBorrar.className = 'borrar';
+        btnBorrar.onclick = () => borrarAnimal(a.id, a.nombre);
+        acciones.append(select, btnGuardar, btnBorrar);
+
+        cuerpo.append(h2, datos, personalidad, descripcion, salud, acciones);
+        art.append(img, cuerpo);
+        return art;
+    }
+
+    async function cargarAnimales() {
+        const lista = document.getElementById('lista');
+        lista.innerHTML = '';
+        const especie = document.getElementById('filtro').value;
+
+        const respuesta = await fetch(especie ? `${URL_API}?especie=${especie}` : URL_API);
+        if (!respuesta.ok) {
+            mostrarMensaje(await textoDeError(respuesta), true);
+            return;
+        }
+
+        const animales = await respuesta.json();
+        if (animales.length === 0) {
+            lista.textContent = 'No hay animales';
+            return;
+        }
+        animales.forEach(a => lista.appendChild(crearTarjeta(a)));
+    }
+
+    document.getElementById('formCrear').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const datos = new URLSearchParams(new FormData(e.target));
+        datos.set('vacunado', document.getElementById('vacunado').checked);
+        datos.set('esterilizado', document.getElementById('esterilizado').checked);
+
+        const respuesta = await fetch(URL_API, { method: 'POST', body: datos });
+        if (respuesta.ok) {
+            mostrarMensaje('Animal dado de alta', false);
+            e.target.reset();
+            cargarAnimales();
+        } else {
+            mostrarMensaje(await textoDeError(respuesta), true);
+        }
+    });
+
+    async function editarAnimal(a, nuevoEstado) {
+        const cuerpo = {
+            nombre: a.nombre, especie: a.especie, raza: a.raza, edad: a.edad, sexo: a.sexo,
+            tamano: a.tamano, peso: a.peso, personalidad: a.personalidad, descripcion: a.descripcion,
+            foto: a.foto, estado: nuevoEstado, vacunado: a.vacunado, esterilizado: a.esterilizado
+        };
+        const respuesta = await fetch(`${URL_API}/${a.id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(cuerpo)
+        });
+        if (respuesta.ok) {
+            mostrarMensaje(`${a.nombre} actualizado`, false);
+            cargarAnimales();
+        } else {
+            mostrarMensaje(await textoDeError(respuesta), true);
+        }
+    }
+
+    async function borrarAnimal(id, nombre) {
+        const respuesta = await fetch(`${URL_API}/${id}`, { method: 'DELETE' });
+        if (respuesta.ok) {
+            mostrarMensaje(`${nombre} eliminado`, false);
+            cargarAnimales();
+        } else {
+            mostrarMensaje(await textoDeError(respuesta), true);
+        }
+    }
+
+    document.getElementById('filtro').addEventListener('change', cargarAnimales);
+    cargarAnimales();
+</script>
+</body>
+</html>
