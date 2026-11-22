@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-HuellasApplication<protectora>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "es.etg.daw.dawes.huellas.HuellasApplication",
+            "projectName": "protectora",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
